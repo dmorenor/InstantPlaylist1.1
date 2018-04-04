@@ -1,0 +1,43 @@
+body {
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;	
+}
+
+div {
+	padding: 30px;
+	margin: -10px;
+}
+
+#header h1{	
+	color: white;
+	margin-top: 0px;
+	margin-bottom: 0px;	
+}
+
+#login button {
+	background-color: #1DB954;
+	color: white;
+	float: right;
+	margin-top: -150px;
+	border: none;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.container {
+	margin: 20px;
+	margin-top: -40px;
+	background-color: #1DB954;
+	color: white;
+}
+
+#search-form, .form-control {
+    margin-bottom: 0px;
+}
+
+#search-form .btn.btn-primary {
+	border-radius: 20px;
+	background-color: #191414;
+	color: white;
+	border: none;
+	padding: 5px;
+}
