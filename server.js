@@ -48,7 +48,8 @@ app.post('/artist_list', function (req, res) {
     artist = req.body.name;
     console.log(artist);
 
-    spotifyApi.searchArtists(artist).then(function(data) {
+    spotifyApi.searchArtists(artist, { limit : 2 })
+        .then(function(data) {
         console.log(data.body);
 
         if (data.body.artists.length) {
