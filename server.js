@@ -67,17 +67,31 @@ app.post('/', function (req, res) {
         return spotifyApi.getArtistRelatedArtists(relartist);
       })
       .then(function(data) {
-        ident2 = JSON.stringify(data.body.artists[0].id);
-        ident2 = ident2.replace(/['"]+/g, '');
-        console.log('ID is ' + ident2);
-        return data.body.artists.map(function(a) { return a.id; });
+        //ident2 = JSON.stringify(data.body.artists[0].id);
+        //ident2 = ident2.replace(/['"]+/g, '');
+        //console.log('ID is ' + ident2);
+		var artistIds = new Array();
+		for(var i = 0; i < 10; i++){
+			artistIds[i] = JSON.stringify(data.body.artists[i].id)
+				.replace(/['"]+/g, '');
+		}
+		console.log(artistIds);
+        return artistIds;
       })
-      .then(function(toptracks) {
+      .then(function(artistIds) {
         // Testing using David Bowie's ID
-        return spotifyApi.getArtistTopTracks('0oSGxfWSnnOXhD2fKuz2Gy', 'US');
+        //return spotifyApi.getArtistTopTracks('0oSGxfWSnnOXhD2fKuz2Gy', 'US');
+		var topTracks = new Array();
+		var i;
+		for(i = 0; i < 10; i++){
+			topTracks[i] = (JSON.stringify(getTopTracks(artistIds[i])).tracks[0].name);
+		}
+		
+	
+		return topTracks;
       })
       .then(function(data) {
-        console.log(data.body);
+        console.log(data);
       })
       .catch(function(err) {
         console.error(err);
@@ -85,6 +99,10 @@ app.post('/', function (req, res) {
 
 	    res.end('Artist: ' + artist);
 });
+
+function getTopTracks(id){
+	return spotifyApi.getArtistTopTracks(id, 'US');
+}
 
 // Server
 var server = app.listen(3000, function () {
