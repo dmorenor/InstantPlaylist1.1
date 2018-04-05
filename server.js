@@ -5,6 +5,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
+var handlebars = require('handlebars');
+
+var makePlaylistScript = $("#makePlaylist").html();
 
 // Set engine
 //app.engine('html', require('ejs').renderFile);
@@ -83,15 +86,16 @@ app.post('/', function (req, res) {
         //return spotifyApi.getArtistTopTracks('0oSGxfWSnnOXhD2fKuz2Gy', 'US');
 		var topTracks = new Array();
 		var i;
-		for(i = 0; i < 10; i++){
-			topTracks[i] = (JSON.stringify(getTopTracks(artistIds[i])).tracks[0].name);
-		}
+		//for(i = 0; i < 10; i++){
+		//	topTracks[i] = getTopTracks(artistIds[i]);
+		//	console.log("I got this: " + topTracks[i].items[0]);
+		//}
+		console.log("....." + JSON.parse(getTopTracks(artistIds[0])).items[0]);
 		
-	
-		return topTracks;
+		return topTracks[0];
       })
       .then(function(data) {
-        console.log(data);
+        console.log(JSON.stringify(data));
       })
       .catch(function(err) {
         console.error(err);

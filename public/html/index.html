@@ -26,6 +26,17 @@
 	</div>
 
 	<div id="playlist">
+	<table>
+		<script id="makePlaylist" type="text/x-handlebars-template">
+			{{#playlistData}}
+			<tr>
+				<td>{{name}}</td>
+				<td>{{artist}}</td>
+				<td>{{album}}</td>
+			</tr>
+			{{/playlistData}}
+		</script>
+	</table>
 
 	</div>
 </body>
