@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
+var playlistData = new Array();
 
 // Set engine
 //app.engine('html', require('ejs').renderFile);
@@ -55,6 +56,7 @@ app.post('/', function (req, res) {
     console.log(artist);
     var ident;
     var ident2;
+    var artistIds = new Array();
 
     spotifyApi.searchArtists(artist)
       .then(function(data) {
@@ -70,28 +72,93 @@ app.post('/', function (req, res) {
         //ident2 = JSON.stringify(data.body.artists[0].id);
         //ident2 = ident2.replace(/['"]+/g, '');
         //console.log('ID is ' + ident2);
-		var artistIds = new Array();
-		for(var i = 0; i < 10; i++){
-			artistIds[i] = JSON.stringify(data.body.artists[i].id)
-				.replace(/['"]+/g, '');
-		}
-		console.log(artistIds);
+    		for(var i = 0; i < 10; i++){
+    			artistIds[i] = JSON.stringify(data.body.artists[i].id)
+    				.replace(/['"]+/g, '');
+    		}
+		    console.log(artistIds);
         return artistIds;
       })
       .then(function(artistIds) {
-        // Testing using David Bowie's ID
-        //return spotifyApi.getArtistTopTracks('0oSGxfWSnnOXhD2fKuz2Gy', 'US');
-		var topTracks = new Array();
-		var i;
-		for(i = 0; i < 10; i++){
-			topTracks[i] = (JSON.stringify(getTopTracks(artistIds[i])).tracks[0].name);
-		}
-		
-	
-		return topTracks;
+    		return spotifyApi.getArtistTopTracks(artistIds[0], 'US');
       })
       .then(function(data) {
-        console.log(data);
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[0] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[1], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[1] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[2], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[2] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[3], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[3] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[4], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[4] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[5], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[5] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[6], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[6] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[7], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[7] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[8], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[8] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        return artistIds;
+      })
+      .then(function(artistIds) {
+    		return spotifyApi.getArtistTopTracks(artistIds[9], 'US');
+      })
+      .then(function(data) {
+        console.log(JSON.stringify(data.body.tracks[0].name));
+        playlistData[9] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
+        console.log(playlistData);
+        return artistIds;
       })
       .catch(function(err) {
         console.error(err);
@@ -99,10 +166,6 @@ app.post('/', function (req, res) {
 
 	    res.end('Artist: ' + artist);
 });
-
-function getTopTracks(id){
-	return spotifyApi.getArtistTopTracks(id, 'US');
-}
 
 // Server
 var server = app.listen(3000, function () {
