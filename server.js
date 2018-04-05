@@ -49,51 +49,41 @@ app.get('/', function (req, res) {
 });
 
 // This responds a POST request
-app.post('/artist_list', function (req, res) {
+app.post('/', function (req, res) {
 
     artist = req.body.name;
     console.log(artist);
     var ident;
     var ident2;
 
-    const options = {
-        url: 'https://api.spotify.com/v1/search?q=' + artist + '&type=artist&limit=1',
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        json: true,
-    };
-
-    request(options, function(err, res, body) {
-        //console.log(JSON.stringify(body));
-        ident = JSON.stringify(body.artists.items[0].id);
+    spotifyApi.searchArtists(artist)
+      .then(function(data) {
+        ident = JSON.stringify(data.body.artists.items[0].id);
         ident = ident.replace(/['"]+/g, '');
         console.log(artist + ' ID is ' + ident);
-    });
-
-    // Tried to search for artist's related artists but failed
-    /*const options2 = {
-        url: 'https://api.spotify.com/v1/artists/' + ident + '/related-artists',
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        json: true,
-    };
-
-    request(options2, function(err, res, body) {
-        console.log(JSON.stringify(body));
-        ident2 = JSON.stringify(body.artists[0].id);
+        return ident;
+      })
+      .then(function(relartist) {
+        return spotifyApi.getArtistRelatedArtists(relartist);
+      })
+      .then(function(data) {
+        ident2 = JSON.stringify(data.body.artists[0].id);
         ident2 = ident2.replace(/['"]+/g, '');
         console.log('ID is ' + ident2);
-    }); */
+        return data.body.artists.map(function(a) { return a.id; });
+      })
+      .then(function(toptracks) {
+        // Testing using David Bowie's ID
+        return spotifyApi.getArtistTopTracks('0oSGxfWSnnOXhD2fKuz2Gy', 'US');
+      })
+      .then(function(data) {
+        console.log(data.body);
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
 
-	res.end('Artist: ' + artist);
+	    res.end('Artist: ' + artist);
 });
 
 // Server

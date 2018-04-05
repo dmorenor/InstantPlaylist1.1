@@ -3,30 +3,30 @@
 <head>
 	<title>Instant Playlist</title>
 	<meta charset="UTF-8">
-	<link href="../stylesheets/instantPlaylist.css" rel="stylesheet" type="text/css">	
+	<link href="../stylesheets/instantPlaylist.css" rel="stylesheet" type="text/css">
 </head>
 
 <body style="background-color: #191414;">
 	<div id="header">
 		<img src="../images/spotify.png" width="200" height="60">
-		<h1>Instant Playlist</h1>		
+		<h1>Instant Playlist</h1>
 	</div>
-	
+
 	<div id="login">
 		<button type="button">Log in to Spotify</button>
 	</div>
-	
+
 	<div class="container">
 		<p>I want a playlist based on...</p>
-		<form id="search-form" action="/artist_list" method="post">
+		<form id="search-form" action="/" method="post">
 			<input type="text" id="query" name="name" onfocus="this.value=''" value="Enter artist..." class="form-control"></input>
 			<input type="submit" id="search" class="btn btn-primary" value="SEARCH"></input>
 		</form>
 		<div id="results"></div>
 	</div>
-	
+
 	<div id="playlist">
-		
+
 	</div>
 </body>
 </html>
