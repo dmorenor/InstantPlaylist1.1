@@ -1,27 +1,10 @@
 "use strict";
-var path = require('path');
-var express = require('express');
-var app = express();
+const path = require('path');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
-
-// Spotify credentials
-var spotifyApi = new SpotifyWebApi({
-  clientId : '490cf01062154dcaa86f8b71c1a10583',
-  clientSecret : '38ddfe45f49d43138186d84e662b48d9',
-  redirectUri : 'http://www.example.com/callback'
-});
-
-// Grants app an auth token
-spotifyApi.clientCredentialsGrant()
-    .then(function(data) {
-        console.log('The access token expires in ' + data.body['expires_in']);
-        console.log('The access token is ' + data.body['access_token']);
-
-        // Save the access token so that it's used in future calls
-        spotifyApi.setAccessToken(data.body['access_token']);
-    }, function(err) {
-        console.log('Something went wrong when retrieving an access token', err.message);
-    });
 
 // Set engine
 //app.engine('html', require('ejs').renderFile);
@@ -31,10 +14,33 @@ spotifyApi.clientCredentialsGrant()
 app.use(express.static('public'));
 
 // Body parser
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-// Holds query
+// Spotify credentials
+var spotifyApi = new SpotifyWebApi({
+  clientId : '490cf01062154dcaa86f8b71c1a10583',
+  clientSecret : '38ddfe45f49d43138186d84e662b48d9',
+  redirectUri : 'http://www.example.com/callback'
+});
+
+// Holds auth token once retrieved
+var token;
+
+// Grants app an auth token
+spotifyApi.clientCredentialsGrant()
+    .then(function(data) {
+        token = data.body['access_token'];
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(data.body['access_token']);
+    }, function(err) {
+        console.log('Something went wrong when retrieving an access token', err.message);
+    });
+
+// Holds query string
 var artist;
 
 // This responds with html on the homepage
@@ -42,31 +48,55 @@ app.get('/', function (req, res) {
    res.sendFile(path.join(__dirname + '/public/html/index.html'));
 });
 
-// This responds a POST request for the homepage
+// This responds a POST request
 app.post('/artist_list', function (req, res) {
 
     artist = req.body.name;
     console.log(artist);
+    var ident;
+    var ident2;
 
-    spotifyApi.searchArtists(artist, { limit : 2 })
-        .then(function(data) {
-        console.log(data.body);
+    const options = {
+        url: 'https://api.spotify.com/v1/search?q=' + artist + '&type=artist&limit=1',
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        json: true,
+    };
 
-        if (data.body.artists.length) {
-            console.log('I found ' + data.body.artists.length + ' artists with a similar name.');
-            //console.log('The most similar one is ' + data.body.artists[0].name);
-        } else {
-            console.log('I didn\'t find any similar artists.. Sorry.');
-        }
-    }, function(err) {
-        console.log('Something went wrong..', err.message);
+    request(options, function(err, res, body) {
+        //console.log(JSON.stringify(body));
+        ident = JSON.stringify(body.artists.items[0].id);
+        ident = ident.replace(/['"]+/g, '');
+        console.log(artist + ' ID is ' + ident);
     });
 
-    //res.render('/', { name: req.body.name });
+    // Tried to search for artist's related artists but failed
+    /*const options2 = {
+        url: 'https://api.spotify.com/v1/artists/' + ident + '/related-artists',
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        json: true,
+    };
+
+    request(options2, function(err, res, body) {
+        console.log(JSON.stringify(body));
+        ident2 = JSON.stringify(body.artists[0].id);
+        ident2 = ident2.replace(/['"]+/g, '');
+        console.log('ID is ' + ident2);
+    }); */
 
 	res.end('Artist: ' + artist);
 });
 
+// Server
 var server = app.listen(3000, function () {
 
    var host = server.address().address;
