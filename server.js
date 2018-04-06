@@ -5,14 +5,17 @@ const app = express();
 const bodyParser = require('body-parser');
 const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
-var handlebars = require('handlebars');
 
-var makePlaylistScript = $("#makePlaylist").html();
+// Holds auth token once retrieved
+var token;
+
+// Holds query string
+var artist;
+
+// Holds playlist data
 var playlistData = new Array();
 
-// Set engine
-//app.engine('html', require('ejs').renderFile);
-//app.set('view engine', 'ejs');
+var playlistInfo = {};
 
 // Where static files are being served
 app.use(express.static('public'));
@@ -21,15 +24,15 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Set engine
+app.set('view engine', 'ejs');
+
 // Spotify credentials
 var spotifyApi = new SpotifyWebApi({
   clientId : '490cf01062154dcaa86f8b71c1a10583',
   clientSecret : '38ddfe45f49d43138186d84e662b48d9',
   redirectUri : 'http://www.example.com/callback'
 });
-
-// Holds auth token once retrieved
-var token;
 
 // Grants app an auth token
 spotifyApi.clientCredentialsGrant()
@@ -44,12 +47,10 @@ spotifyApi.clientCredentialsGrant()
         console.log('Something went wrong when retrieving an access token', err.message);
     });
 
-// Holds query string
-var artist;
-
 // This responds with html on the homepage
 app.get('/', function (req, res) {
-   res.sendFile(path.join(__dirname + '/public/html/index.html'));
+   //res.sendFile(path.join(__dirname + '/public/html/index.html'));
+   res.render('index', {playlist: null} );
 });
 
 // This responds a POST request
@@ -74,7 +75,7 @@ app.post('/', function (req, res) {
       .then(function(data) {
         //ident2 = JSON.stringify(data.body.artists[0].id);
         //ident2 = ident2.replace(/['"]+/g, '');
-        //console.log('ID is ' + ident2);
+        //console.log(JSON.stringify(data));
     		for(var i = 0; i < 10; i++){
     			artistIds[i] = JSON.stringify(data.body.artists[i].id)
     				.replace(/['"]+/g, '');
@@ -161,13 +162,35 @@ app.post('/', function (req, res) {
         console.log(JSON.stringify(data.body.tracks[0].name));
         playlistData[9] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
         console.log(playlistData);
+
+        var songs = [];
+        playlistInfo.songs = songs;
+
+        for(var i = 0; i < 10; i++){
+          var temp = JSON.stringify(playlistData[i]).split("|");
+          var name = temp[0].replace(/\\['"]+/g, '');
+          var artist = temp[1].replace(/\\['"]+/g, '');
+          var album = temp[2].replace(/\\['"]+/g, '');
+          var url = temp[3].replace(/\\['"]+/g, '');
+          var song = {
+            "name": name,
+            "artist": artist,
+            "album": album,
+            "url": url
+          }
+          playlistInfo.songs.push(song);
+        };
+
+        console.log(playlistInfo);
+        res.render('index', {playlist: playlistData});
         return artistIds;
       })
       .catch(function(err) {
         console.error(err);
       });
 
-	    res.end('Artist: ' + artist);
+
+
 });
 
 // Server

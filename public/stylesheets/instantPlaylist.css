@@ -1,5 +1,5 @@
 body {
-	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;	
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
 }
 
 div {
@@ -7,10 +7,10 @@ div {
 	margin: -10px;
 }
 
-#header h1{	
+#header h1{
 	color: white;
 	margin-top: 0px;
-	margin-bottom: 0px;	
+	margin-bottom: 0px;
 }
 
 #login button {
@@ -40,4 +40,8 @@ div {
 	color: white;
 	border: none;
 	padding: 5px;
+}
+
+#playlist {
+	background-color: beige;
 }
