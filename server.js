@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
+var util = require('util');
 
 
 // Holds auth token once retrieved
@@ -15,6 +16,8 @@ var artist;
 
 // Holds playlist data
 var playlistData = new Array();
+
+var jarr = new Array();
 
 // Where static files are being served
 app.use(express.static('public'));
@@ -82,99 +85,37 @@ app.post('/', function (req, res) {
 		    console.log(artistIds);
         return artistIds;
       })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[0], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[0] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[1], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[1] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[2], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[2] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[3], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[3] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[4], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[4] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[5], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[5] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[6], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[6] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[7], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[7] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[8], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[8] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        return artistIds;
-      })
-      .then(function(artistIds) {
-    		return spotifyApi.getArtistTopTracks(artistIds[9], 'US');
-      })
-      .then(function(data) {
-        console.log(JSON.stringify(data.body.tracks[0].name));
-        playlistData[9] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-        console.log(playlistData);
+      .then(function(artistIds){	
+      		artistIds.forEach(function(id){
+      			Promise.resolve().then(function reslover(){
+      				return spotifyApi.getArtistTopTracks(id, 'US')
+      				.then(function(data){
+      					console.log(JSON.stringify(data.body.tracks[0].name));
+      					
+      					var pos = artistIds.indexOf(id);
+      					console.log(pos);
+      					playlistData[pos] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
 
-        res.render('index', {playlist: playlistData});
-        return artistIds;
+      					if(playlistData.length === 10 && !playlistData.includes(undefined)){
+      					  console.log(playlistData);
+      					  res.render('index', {playlist: playlistData});
+      					  playlistData = new Array();
+      					} 
+      				})
+      			}).catch((error) => {
+    					console.log("Error: " + error);
+				});
+      		})
       })
       .catch(function(err) {
         console.error(err);
       });
-
-
-
 });
 
+
+
 // Server
-var server = app.listen(3000, function () {
+var server = app.listen(3111, function () {
 
    var host = server.address().address;
    var port = server.address().port;
