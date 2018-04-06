@@ -5,6 +5,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
+var favicon = require('serve-favicon');
+
+
 
 // Holds auth token once retrieved
 var token;
@@ -17,6 +20,7 @@ var playlistData = new Array();
 
 // Where static files are being served
 app.use(express.static('public'));
+app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 
 // Body parser
 app.use(bodyParser.json());
