@@ -43,8 +43,7 @@ div {
 }
 
 #playlist {
-	background-color: white;
-	background-color: #808080;
+
 	margin: 5px;
 	margin-top: 20px;
 }
@@ -53,9 +52,10 @@ div {
 	color: white;
 	table-layout: auto;
 	width: 100%;
+	margin-left: -20;
 }
 
 #playlist table th {
 	text-align: left;
-
+	color: #1DB954;
 }

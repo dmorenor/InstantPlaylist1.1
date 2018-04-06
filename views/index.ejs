@@ -28,6 +28,7 @@
 
 	<div id="playlist">
 		<table>
+		<% if(playlist !== null) {%>
 			<thead>
 				<th>Title</th>
 				<th>Artist</th>
@@ -37,7 +38,7 @@
 
 			<tbody>
 
-				<% if(playlist !== null) {%>
+				
 					<% var bigList = playlist %>
 					<% for (var i = 0; i < bigList.length; i++) {%>
 						<% var song = bigList[i] %>
@@ -49,8 +50,9 @@
 							<% var playUrl = songInfo[3].replace(/['"]+/g, '')%>
 							<td><audio controls><source src="<%= playUrl %>" type="audio/mpeg"></audio> </td>
 						</tr>
-					<% }} %>
+					<% } %>
 			</tbody>
+			<% } %>
 		</table>
 	</div>
 	</div>

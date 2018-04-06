@@ -15,8 +15,6 @@ var artist;
 // Holds playlist data
 var playlistData = new Array();
 
-var playlistInfo = {};
-
 // Where static files are being served
 app.use(express.static('public'));
 
@@ -49,7 +47,6 @@ spotifyApi.clientCredentialsGrant()
 
 // This responds with html on the homepage
 app.get('/', function (req, res) {
-   //res.sendFile(path.join(__dirname + '/public/html/index.html'));
    res.render('index', {playlist: null} );
 });
 
@@ -163,25 +160,6 @@ app.post('/', function (req, res) {
         playlistData[9] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
         console.log(playlistData);
 
-        var songs = [];
-        playlistInfo.songs = songs;
-
-        for(var i = 0; i < 10; i++){
-          var temp = JSON.stringify(playlistData[i]).split("|");
-          var name = temp[0].replace(/\\['"]+/g, '');
-          var artist = temp[1].replace(/\\['"]+/g, '');
-          var album = temp[2].replace(/\\['"]+/g, '');
-          var url = temp[3].replace(/\\['"]+/g, '');
-          var song = {
-            "name": name,
-            "artist": artist,
-            "album": album,
-            "url": url
-          }
-          playlistInfo.songs.push(song);
-        };
-
-        console.log(playlistInfo);
         res.render('index', {playlist: playlistData});
         return artistIds;
       })
