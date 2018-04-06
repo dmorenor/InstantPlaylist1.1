@@ -17,13 +17,14 @@
 	</div>
 
 	<div class="container">
+		<div id="searchBox">
 		<p>I want a playlist based on...</p>
 		<form id="search-form" action="/" method="post">
 			<input type="text" id="query" name="name" onfocus="this.value=''" value="Enter artist..." class="form-control"></input>
 			<input type="submit" id="search" class="btn btn-primary" value="SEARCH"></input>
 		</form>
-		<div id="results"></div>
-	</div>
+		</div>
+
 
 	<div id="playlist">
 		<table>
@@ -31,7 +32,7 @@
 				<th>Name</th>
 				<th>Artist</th>
 				<th>Album</th>
-				<th>Play</th>
+				<th></th>
 			</thead>
 
 			<tbody>
@@ -45,11 +46,13 @@
 							<td><%= songInfo[0].replace(/['"]+/g, '')%> </td>
 							<td><%= songInfo[1].replace(/['"]+/g, '')%> </td>
 							<td><%= songInfo[2].replace(/['"]+/g, '')%> </td>
-							<td><%= songInfo[3].replace(/['"]+/g, '')%> </td>
+							<% var playUrl = songInfo[3].replace(/['"]+/g, '')%>
+							<td><audio controls><source src="<%= playUrl %>" type="audio/mpeg"></audio> </td>
 						</tr>
 					<% }} %>
 			</tbody>
 		</table>
+	</div>
 	</div>
 </body>
 </html>

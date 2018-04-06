@@ -23,7 +23,7 @@ div {
 	border-radius: 10px;
 }
 
-.container {
+#searchBox {
 	margin: 20px;
 	margin-top: -40px;
 	background-color: #1DB954;
@@ -43,5 +43,18 @@ div {
 }
 
 #playlist {
-	background-color: beige;
+	background-color: white;
+	margin: 20px;
+	background-color: #808080;
+}
+
+#playlist table {
+	color: white;
+	table-layout: auto;
+	width: 100%;
+}
+
+#playlist table th {
+	text-align: left;
+
 }
