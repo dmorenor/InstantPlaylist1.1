@@ -16,6 +16,7 @@ var artist;
 
 // Holds playlist data
 var playlistData = new Array();
+var playlistUri = new Array();
 
 var jarr = new Array();
 
@@ -95,7 +96,7 @@ app.post('/', function (req, res) {
       					var pos = artistIds.indexOf(id);
       					console.log(pos);
       					playlistData[pos] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
-
+						playlistUri[pos] = data.body.track[o].uri;
       					if(playlistData.length === 10 && !playlistData.includes(undefined)){
       					  console.log(playlistData);
       					  res.render('index', {playlist: playlistData});
