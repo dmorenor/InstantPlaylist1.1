@@ -9,7 +9,7 @@
 
 <body style="background-color: #191414;">
 	<div id="header">
-		<img src="../images/spotify.png" width="200" height="60">
+		<a href="localhost:3000"><img src="../images/spotify.png" width="200" height="60"></a>
 		<h1>Instant Playlist</h1>
 	</div>
 
@@ -19,7 +19,7 @@
 
 	<div class="container">
 		<div id="searchBox">
-		<p>I want a playlist based on... <%= baseArtist %></p>
+		<p><strong>I want a playlist based on: <%= baseArtist %></strong></p>
 		<form id="search-form" action="/" method="post">
 			<input type="text" id="query" name="name" onfocus="this.value=''" value="Enter artist..." class="form-control"></input>
 			<input type="submit" id="search" class="btn btn-primary" value="SEARCH"></input>
@@ -49,7 +49,7 @@
 							<td><%= songInfo[1].replace(/['"]+/g, '')%> </td>
 							<td><%= songInfo[2].replace(/['"]+/g, '')%> </td>
 							<% var playUrl = songInfo[3].replace(/['"]+/g, '')%>
-							<td><audio controls><source src="<%= playUrl %>" type="audio/mpeg"></audio> </td>
+							<td><a href="<%= playUrl %>" target="_blank"><button type="button">View in Spotify</button</a></td>
 						</tr>
 					<% } %>
 			</tbody>

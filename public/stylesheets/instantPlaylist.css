@@ -7,6 +7,14 @@ div {
 	margin: -10px;
 }
 
+button {
+	background-color: #1DB954;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+	border: none;
+}
+
 #header h1{
 	color: white;
 	margin-top: 20px;
@@ -29,18 +37,24 @@ div {
 	background-color: #1DB954;
 	color: white;
 	border-radius: 15px;
+	text-align: center;
 }
+
 
 #search-form, .form-control {
     margin-bottom: 0px;
+	height: 25px;
+	border-radius: 15px;
+	border: none;
+	padding: 5px;
 }
 
 #search-form .btn.btn-primary {
-	border-radius: 20px;
+	border-radius: 15px;
 	background-color: #191414;
 	color: white;
 	border: none;
-	padding: 5px;
+	padding: 10px;
 }
 
 #playlist {
@@ -53,7 +67,6 @@ div {
 	color: white;
 	table-layout: auto;
 	width: 100%;
-	margin-left: -20;
 }
 
 #playlist table th {
