@@ -49,7 +49,7 @@ spotifyApi.clientCredentialsGrant()
 
 // This responds with html on the homepage
 app.get('/', function (req, res) {
-   res.render('index', {playlist: null, baseArtist: null} );
+   res.render('index', {playlist: null, baseArtist: null, token: null} );
 });
 
 // This responds a POST request
@@ -146,7 +146,7 @@ app.post('/', function (req, res) {
       .then(function(data) {
         playlistData[9] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
         console.log(playlistData);
-        res.render('index', {playlist: playlistData, baseArtist: artist});
+        res.render('index', {playlist: playlistData, baseArtist: artist, token: token});
         return artistIds;
       })
       .catch(function(err) {

@@ -37,21 +37,19 @@
 				<th></th>
 			</thead>
 
-			<tbody>
-
-				
-					<% var bigList = playlist %>
-					<% for (var i = 0; i < bigList.length; i++) {%>
-						<% var song = bigList[i] %>
-						<% var songInfo = song.replace(/\\['"]+/g, '').split("|") %>
-						<tr>
-							<td><%= songInfo[0].replace(/['"]+/g, '')%> </td>
-							<td><%= songInfo[1].replace(/['"]+/g, '')%> </td>
-							<td><%= songInfo[2].replace(/['"]+/g, '')%> </td>
-							<% var playUrl = songInfo[3].replace(/['"]+/g, '')%>
-							<td><a href="<%= playUrl %>" target="_blank"><button type="button">View in Spotify</button</a></td>
-						</tr>
-					<% } %>
+			<tbody>	
+				<% var bigList = playlist %>
+				<% for (var i = 0; i < bigList.length; i++) {%>
+					<% var song = bigList[i] %>
+					<% var songInfo = song.replace(/\\['"]+/g, '').split("|") %>
+					<tr>
+						<td><%= songInfo[0].replace(/['"]+/g, '')%> </td>
+						<td><%= songInfo[1].replace(/['"]+/g, '')%> </td>
+						<td><%= songInfo[2].replace(/['"]+/g, '')%> </td>
+						<% var playUrl = songInfo[3].replace(/['"]+/g, '')%>
+						<td><a href="<%= playUrl %>" target="_blank"><button type="button">View in Spotify</button</a></td>
+					</tr>
+				<% } %>
 			</tbody>
 			<% } %>
 		</table>
