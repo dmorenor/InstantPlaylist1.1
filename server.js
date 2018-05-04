@@ -94,10 +94,6 @@ app.get('/login', function(req, res) {
     res.redirect(url);
 });
 
-app.get('', fucntion(req, res) {
-
-});
-
 // This responds a POST request
 app.post('/tracks', function (req, res) {
 
