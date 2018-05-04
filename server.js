@@ -36,7 +36,7 @@ app.use(express.static('public'));
 
 // Body parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Set engine
 app.set('view engine', 'ejs');
@@ -64,8 +64,10 @@ spotifyApi.clientCredentialsGrant()
     });
 
 // This responds with html on the homepage
-app.get('/', function (req, res) {
-   res.render('index', {playlist: null, baseArtist: null, token: null} );
+app.get('/', async function (req, res) {
+    let tok = req.query.access_token;
+    console.log('User token is ' + tok);
+    res.render('index', {playlist: null, baseArtist: null, token: null} );
 });
 
 app.get('/login', function(req, res) {
