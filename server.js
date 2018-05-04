@@ -10,6 +10,9 @@ var SpotifyWebApi = require('spotify-web-api-node');
 // Holds auth token once retrieved
 var token;
 
+// Holds user's token
+var userToken;
+
 // Holds query string
 var artist;
 
@@ -52,8 +55,17 @@ app.get('/', function (req, res) {
    res.render('index', {playlist: null, baseArtist: null, token: null} );
 });
 
+app.get('/login', function(req, res) {
+    var scopes = 'user-read-private user-read-email';
+    res.redirect('https://accounts.spotify.com/authorize' +
+        '?response_type=token' +
+        '&client_id=' + '490cf01062154dcaa86f8b71c1a10583' +
+        (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+        '&redirect_uri=' + encodeURIComponent('http://example.com/callback/'));
+});
+
 // This responds a POST request
-app.post('/', function (req, res) {
+app.post('/tracks', function (req, res) {
 
     artist = req.body.name;
     var ident;
