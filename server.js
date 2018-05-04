@@ -3,9 +3,15 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const querystring = require('querystring');
 const request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
+var localStorage;
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
 
 // Holds auth token once retrieved
 var token;
@@ -18,6 +24,11 @@ var artist;
 
 // Holds playlist data
 var playlistData = new Array();
+
+var clientID = '490cf01062154dcaa86f8b71c1a10583';
+var clientSec = '38ddfe45f49d43138186d84e662b48d9';
+var redirectURL = 'http://localhost:3000/';
+var stateKey = 'spotify_auth_state';
 
 // Where static files are being served
 app.use(express.static('public'));
@@ -32,10 +43,12 @@ app.set('view engine', 'ejs');
 
 // Spotify credentials
 var spotifyApi = new SpotifyWebApi({
-  clientId : '490cf01062154dcaa86f8b71c1a10583',
-  clientSecret : '38ddfe45f49d43138186d84e662b48d9',
-  redirectUri : 'http://www.example.com/callback'
+  clientId : clientID,
+  clientSecret : clientSec,
+  redirectUri : redirectURL
 });
+
+var userSpotifyApi;
 
 // Grants app an auth token
 spotifyApi.clientCredentialsGrant()
@@ -56,12 +69,33 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function(req, res) {
-    var scopes = 'user-read-private user-read-email';
-    res.redirect('https://accounts.spotify.com/authorize' +
-        '?response_type=token' +
-        '&client_id=' + '490cf01062154dcaa86f8b71c1a10583' +
-        (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-        '&redirect_uri=' + encodeURIComponent('http://example.com/callback/'));
+    var state = generateRandomString(16);
+
+    localStorage.setItem(stateKey, state);
+    var scopes = ['user-read-private user-read-email'];
+        //redirectUri = redirectURL,
+        //clientId = clientID,
+        //state = state1;
+
+    var url = 'https://accounts.spotify.com/authorize';
+    url += '?response_type=token';
+    url += '&client_id=' + encodeURIComponent(clientID);
+    url += '&scope=' + encodeURIComponent(scopes);
+    url += '&redirect_uri=' + encodeURIComponent(redirectURL);
+    url += '&state=' + encodeURIComponent(state);
+
+    /*userSpotifyApi = new SpotifyWebApi( {
+       redirectUri: redirectURL,
+       clientId: clientID
+    });*/
+
+    //var url = userSpotifyApi.createAuthorizeURL(scopes, state);
+
+    res.redirect(url);
+});
+
+app.get('', fucntion(req, res) {
+
 });
 
 // This responds a POST request
@@ -165,6 +199,16 @@ app.post('/tracks', function (req, res) {
         console.error(err);
       });
 });
+
+function generateRandomString(length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+};
 
 // Server
 var server = app.listen(3000, function () {
