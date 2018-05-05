@@ -5,6 +5,7 @@
 	<link rel="shortcut icon" href="../images/favicon.ico">
 	<meta charset="UTF-8">
 	<link href="../stylesheets/instantPlaylist.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body style="background-color: #191414;">
@@ -36,7 +37,7 @@
 				<th></th>
 			</thead>
 
-			<tbody>	
+			<tbody>
 				<% var bigList = playlist %>
 				<% for (var i = 0; i < bigList.length; i++) {%>
 					<% var song = bigList[i] %>
@@ -53,33 +54,67 @@
 			<% } %>
 		</table>
 	</div>
-	
-	<script src="https://sdk.scdn.co/spotify-player.js"></script>
-		<script> window.onSpotifyWebPlaybackSDKReady = () => {
-			const token = <%= token %>;
-			const player = new Spotify.Player({
-				name: 'Web Playback SDK Quick Start Player',
-				getOAuthToken: cb => { cb(token); }
-			});
+</div>
 
-			// Error handling
-			player.addListener('initialization_error', ({ message }) => { console.error(message); });
-			player.addListener('authentication_error', ({ message }) => { console.error(message); });
-			player.addListener('account_error', ({ message }) => { console.error(message); });
-			player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-			// Playback status updates
-			player.addListener('player_state_changed', state => { console.log(state); });
-
-			// Ready
-			player.addListener('ready', ({ device_id }) => {
-			console.log('Ready with Device ID', device_id);
-			});
-
-			// Connect to the player!
-			player.connect();
-		};
-	  </script>
+	<div class="player_container">
+	<div class="login-container hidden" id="js-login-container">
+		<button class="btn btn--login" id="js-btn-login">Login with Spotify</button>
 	</div>
+	<div class="main-container" id="js-main-container"></div>
+</div>
+<script src="https://spotify-player.herokuapp.com/spotify-player.js"></script>
+<script>
+/////////////// TRYING SHIT OUT
+
+var mainContainer = document.getElementById('js-main-container'),
+    loginContainer = document.getElementById('js-login-container'),
+    loginButton = document.getElementById('js-btn-login');
+
+var spotifyPlayer = new SpotifyPlayer();
+
+var template = function (data) {
+  return `
+    <div class="main-wrapper">
+      <div class="now-playing__img">
+        <img src="${data.item.album.images[0].url}">
+      </div>
+      <div class="now-playing__side">
+        <div class="now-playing__name">${data.item.name}</div>
+        <div class="now-playing__artist">${data.item.artists[0].name}</div>
+        <div class="now-playing__status">${data.is_playing ? 'Playing' : 'Paused'}</div>
+        <div class="progress">
+          <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
+        </div>
+				<div class="controls">
+					<button style="font-size:24px"><i class="fa fa-play-circle-o"></i></button>
+					<button style="font-size:24px"><i class="fa fa-pause-circle-o"></i></button>
+				</div>
+      </div>
+    </div>
+  </div>
+  `;
+};
+
+ spotifyPlayer.on('update', response => {
+  mainContainer.innerHTML = template(response);
+});
+
+spotifyPlayer.on('login', user => {
+  if (user === null) {
+    loginContainer.style.display = 'block';
+    mainContainer.style.display = 'none';
+  } else {
+    loginContainer.style.display = 'none';
+    mainContainer.style.display = 'block';
+  }
+});
+
+loginButton.addEventListener('click', () => {
+    spotifyPlayer.login();
+});
+
+spotifyPlayer.init();
+
+</script>
 </body>
 </html>

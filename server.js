@@ -114,7 +114,7 @@ app.post('/tracks', function (req, res) {
       .then(function(relartist) {
         return spotifyApi.getArtistRelatedArtists(relartist);
       })
-      .then(function(data) {        
+      .then(function(data) {
     		for(var i = 0; i < 10; i++){
     			artistIds[i] = JSON.stringify(data.body.artists[i].id)
     				.replace(/['"]+/g, '');
@@ -124,7 +124,7 @@ app.post('/tracks', function (req, res) {
       .then(function(artistIds) {
     		return spotifyApi.getArtistTopTracks(artistIds[0], 'US');
       })
-      .then(function(data) {        
+      .then(function(data) {
         playlistData[0] = JSON.stringify(data.body.tracks[0].name) + "|" + JSON.stringify(data.body.tracks[0].artists[0].name) + "|" + JSON.stringify(data.body.tracks[0].album.name) + "|" + JSON.stringify(data.body.tracks[0].external_urls.spotify);
         return artistIds;
       })
