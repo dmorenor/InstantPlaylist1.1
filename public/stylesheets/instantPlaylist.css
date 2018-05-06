@@ -86,7 +86,7 @@ button {
 }
 
 /** Buttons **/
-.btn {
+/* .btn {
   background-color: transparent;
   border-radius: 2em;
   border: 0.2em solid #1ecd97;
@@ -101,7 +101,7 @@ button {
 .btn:hover {
   background: #1ecd97;
   color: #333;
-}
+} */
 
 .btn--login {
   margin: 0 auto;
@@ -111,14 +111,17 @@ button {
 .now-playing__name {
   font-size: 1.5em;
   margin-bottom: 0.2em;
+	padding: 0;
 }
 
 .now-playing__artist {
   margin-bottom: 1em;
+	padding: 0;
 }
 
 .now-playing__status {
   margin-bottom: 1em;
+	padding: 0;
 }
 
 .now-playing__img {
