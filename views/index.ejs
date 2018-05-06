@@ -14,6 +14,7 @@
 	</div>
 
 	<form id="login" action="/login" method="get">
+		<form id="login"  method="get">
 		<input type="submit" value="Spotify Login" />
 	</form>
 
@@ -56,18 +57,20 @@
 	</div>
 </div>
 
+
 	<div class="player_container">
 	<div class="login-container hidden" id="js-login-container">
 		<button class="btn btn--login" id="js-btn-login">Login with Spotify</button>
 	</div>
 	<div class="main-container" id="js-main-container"></div>
-</div>
+
+	</div>
 <script src="https://spotify-player.herokuapp.com/spotify-player.js"></script>
 <script>
-/////////////// TRYING SHIT OUT
+
 
 var mainContainer = document.getElementById('js-main-container'),
-    loginContainer = document.getElementById('js-login-container'),
+    loginContainer = document.getElementById('js-login-container');
     loginButton = document.getElementById('js-btn-login');
 
 var spotifyPlayer = new SpotifyPlayer();
@@ -85,10 +88,7 @@ var template = function (data) {
         <div class="progress">
           <div class="progress__bar" style="width:${data.progress_ms * 100 / data.item.duration_ms}%"></div>
         </div>
-				<div class="controls">
-					<button style="font-size:24px"><i class="fa fa-play-circle-o"></i></button>
-					<button style="font-size:24px"><i class="fa fa-pause-circle-o"></i></button>
-				</div>
+
       </div>
     </div>
   </div>
