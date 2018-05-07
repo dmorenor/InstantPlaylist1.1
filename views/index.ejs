@@ -13,10 +13,12 @@
 		<a href="/" onclick="window.location.reload(true);"><img src="../images/spotifyaltered.png" width="240" height="109"></a>
 	</div>
 
+	<%#
 	<form id="login" action="/login" method="get">
 		<form id="login"  method="get">
 		<input type="submit" value="Spotify Login" />
 	</form>
+	%>
 
 	<div class="container">
 		<div id="searchBox">
@@ -48,7 +50,7 @@
 						<td><%= songInfo[1].replace(/['"]+/g, '')%> </td>
 						<td><%= songInfo[2].replace(/['"]+/g, '')%> </td>
 						<% var playUrl = songInfo[3].replace(/['"]+/g, '')%>
-						<td><a href="<%= playUrl %>" target="_blank"><button type="button">View in Spotify</button</a></td>
+						<td><a href="<%= playUrl %>" target="_self"><button type="button">View in Spotify</button</a></td>
 					</tr>
 				<% } %>
 			</tbody>
